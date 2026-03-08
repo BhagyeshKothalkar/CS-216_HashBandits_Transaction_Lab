@@ -11,7 +11,9 @@ services:
     
 
   client:
-    build: .
+    image: testbtc:latest
+    build:
+      context: .
     depends_on:
       - bitcoin_server
     environment:
