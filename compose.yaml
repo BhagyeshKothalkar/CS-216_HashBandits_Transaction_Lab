@@ -5,6 +5,7 @@ services:
       - type: bind
         source: ./bitcoin.conf
         target: /bitcoin.conf
+      - bitcoin_data:/home/bitcoin/.bitcoin
     command:
       -conf=/bitcoin.conf
     
@@ -17,3 +18,6 @@ services:
       - BITCOIN_RPC_USER=test
       - BITCOIN_RPC_PASSWORD=test123
       - BITCOIN_RPC_HOST=bitcoin_server
+
+volumes:
+  bitcoin_data: 
