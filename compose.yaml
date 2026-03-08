@@ -1,0 +1,18 @@
+services:
+  bitcoin_server:
+    image: bitcoin/bitcoin:30.2-alpine
+    volumes:
+      - type: bind
+        source: ./bitcoin.conf
+        target: /bitcoin.conf
+    command:
+      -conf=/bitcoin.conf
+
+  client:
+    build: .
+    depends_on:
+      - bitcoin_server
+    environment:
+      - BITCOIN_RPC_USER=test
+      - BITCOIN_RPC_PASSWORD=test123
+      - BITCOIN_RPC_HOST=bitcoin_server
