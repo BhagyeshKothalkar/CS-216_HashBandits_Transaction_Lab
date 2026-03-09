@@ -32,9 +32,9 @@ WORKDIR /app
 RUN apk add --no-cache \
     libstdc++ readline python3 bash libssl3
 COPY --from=build /usr/local/bin/btcc /usr/local/bin/btcc
-COPY --from=build /usr/local/bin/btcc /usr/local/bin/btcdeb
-COPY --from=build /usr/local/bin/btcc /usr/local/bin/tap
-COPY --from=build /usr/local/bin/btcc /usr/local/bin/test-btcdeb
+COPY --from=build /usr/local/bin/btcdeb /usr/local/bin/btcdeb
+COPY --from=build /usr/local/bin/tap /usr/local/bin/tap
+COPY --from=build /usr/local/bin/test-btcdeb /usr/local/bin/test-btcdeb
 COPY --from=build /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 COPY src /app/src
