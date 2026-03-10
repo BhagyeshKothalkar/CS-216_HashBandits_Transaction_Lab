@@ -16,14 +16,15 @@ RUN git clone https://github.com/bitcoin-core/btcdeb/ \
     && cd btcdeb \
     && ./autogen.sh \
     && ./configure \
+        --disable-asm \
+        CXXFLAGS="-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0" \
+        CFLAGS="-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0" \
     && make clean \
     && make install
 
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
-RUN git clone https://github.com/petertodd/python-bitcoinlib \
-    && cd python-bitcoinlib \
-    && pip install --no-cache-dir .
+RUN pip install python-bitcoinlib pexpect
 
 
 
