@@ -16,11 +16,18 @@ from bitcoin.rpc import JSONRPCError, Proxy
 
 SelectParams("regtest")
 
+# Configuration constants
+RPC_PORT = 18443
+MIN_FUNDING = 10.0  # BTC minimum for funding both chains
+INITIAL_FUNDING = 5.0  # BTC per address
+TRANSACTION_FEE = 0.0001  # BTC
+MIN_BLOCK_HEIGHT = 101  # For coinbase maturity
+
 # ── RPC connection setup ─────────────────────────────────────────────────────
 user = os.getenv("BITCOIN_RPC_USER", "rpcuser").rstrip("/")
 password = os.getenv("BITCOIN_RPC_PASSWORD", "rpcpass").rstrip("/")
 host = os.getenv("BITCOIN_RPC_HOST", "127.0.0.1").rstrip("/")
-port = 18443
+port = RPC_PORT
 
 base_url = f"http://{user}:{password}@{host}:{port}"
 node_conn = Proxy(service_url=base_url)
