@@ -48,12 +48,12 @@ def run_segwit():
         print("Error: 'btcdeb' binary not found in PATH. Please install it first.")
         sys.exit(1)
 
-    # ==============================================================================
+    
     print("\n" + "=" * 70)
     print("1. Program Setup: Connect RPC, Wallets, P2SH-SegWit Addresses & Funding")
     print("=" * 70)
 
-    # Make sure the default node wallet has funds (handling the fee safety net)
+    # Handling the fee safety
     node_conn = setup_wallet("default")
     mining_addr = node_conn._call("getnewaddress")
 
@@ -91,7 +91,7 @@ def run_segwit():
     # Mine 1 block to confirm the funding
     node_conn._call("generatetoaddress", 1, mining_addr)
 
-    # ==============================================================================
+    
     print("\n" + "=" * 70)
     print("2. Create a Transaction from Address A to Address B")
     print("=" * 70)
@@ -133,7 +133,6 @@ def run_segwit():
 
     node_conn._call("generatetoaddress", 1, mining_addr)
 
-    # ==============================================================================
     print("\n" + "=" * 70)
     print("3. Write another program to send B to C and Validate Scripts")
     print("=" * 70)
