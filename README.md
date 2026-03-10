@@ -70,7 +70,7 @@ Press 4 to Exit
 
 The detailed assignment report with decoded scripts, btcdeb analysis, comparison tables, and explanations is provided as a LaTeX PDF:
 
-📄 **[report.pdf](report.pdf)** — Full assignment report
+📄 **[report.pdf](report_transaction_lab_hashbandits-1.pdf)** — Full assignment report
 
 ## Tools Used
 
