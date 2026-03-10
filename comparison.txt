@@ -1,0 +1,121 @@
+Choose Transaction Mode:
+Press 1 for Legacy
+Press 2 for Segwit
+Press 3 for Comparative Analysis
+Press 4 to Exit
+Mode: Executing Comparative Analysis
+======================================================================
+  Part 3: Comparative Analysis — P2PKH (Legacy) vs P2SH-P2WPKH (SegWit)
+======================================================================
+
+• Running Legacy (P2PKH) transaction chain A → B → C ...
+• Running SegWit (P2SH-P2WPKH) transaction chain A' → B' → C' ...
+
+======================================================================
+  3.1  Transaction Size Comparison (bytes, vbytes, weight)
+======================================================================
+
+  Transaction A → B (Legacy) vs A' → B' (SegWit):
+  Legacy  A→B           size= 191 bytes   vsize= 191 vbytes   weight=  764 WU
+  SegWit  A'→B'         size= 215 bytes   vsize= 134 vbytes   weight=  533 WU
+
+  Δ A→B:  size=-24   vsize=+57   weight=+231  (Legacy − SegWit)
+
+  Transaction B → C (Legacy) vs B' → C' (SegWit):
+  Legacy  B→C           size= 191 bytes   vsize= 191 vbytes   weight=  764 WU
+  SegWit  B'→C'         size= 215 bytes   vsize= 134 vbytes   weight=  533 WU
+
+  Δ B→C:  size=-24   vsize=+57   weight=+231  (Legacy − SegWit)
+
+======================================================================
+  3.2  Script Structure Comparison
+======================================================================
+
+  ── Legacy (P2PKH) Scripts ──
+
+  [A → B (signed)]
+    ScriptPubKey (locking / challenge):
+      type : pubkeyhash
+      asm  : OP_DUP OP_HASH160 c6363ed36d41e5f7131ae5bbc9f37f18824d0749 OP_EQUALVERIFY OP_CHECKSIG
+      hex  : 76a914c6363ed36d41e5f7131ae5bbc9f37f18824d074988ac
+    ScriptSig (unlocking / response):
+      asm  : 3044022074f7ef0a8c87f61a8be16bccf8a63a1dca0238f6f7bc25e35b9cb3982f1734e6022057e4fb0b2d0de6e633ea643ae37b54a825bebb3dcc33384c06ecd6b7512b34fa[ALL] 028f2c9797e3855177b8a5c957db7a0ae15368b4df24c26bfa534cc34627daa1e9
+      hex  : 473044022074f7ef0a8c87f61a8be16bccf8a63a1dca0238f6f7bc25e35b9cb3982f1734e6022057e4fb0b2d0de6e633ea643ae37b54a825bebb3dcc33384c06ecd6b7512b34fa0121028f2c9797e3855177b8a5c957db7a0ae15368b4df24c26bfa534cc34627daa1e9
+
+  [B → C (signed)]
+    ScriptPubKey (locking / challenge):
+      type : pubkeyhash
+      asm  : OP_DUP OP_HASH160 120c9ca04a2637c7c018449b537085e87cb51dcf OP_EQUALVERIFY OP_CHECKSIG
+      hex  : 76a914120c9ca04a2637c7c018449b537085e87cb51dcf88ac
+    ScriptSig (unlocking / response):
+      asm  : 3044022056a39bc5d2526864f4ee263f1d76c8d3acd30678639a1234a0f416ceee460b65022019001f4e752fff8c856b5ee2be0f71641517af8a473fec0395a7d52fed45d854[ALL] 029cca5ec581142a8f250593ef017264272d09cbbcead056316d72f7e5b35f63b5
+      hex  : 473044022056a39bc5d2526864f4ee263f1d76c8d3acd30678639a1234a0f416ceee460b65022019001f4e752fff8c856b5ee2be0f71641517af8a473fec0395a7d52fed45d8540121029cca5ec581142a8f250593ef017264272d09cbbcead056316d72f7e5b35f63b5
+
+  ── P2SH-SegWit (P2SH-P2WPKH) Scripts ──
+
+  [A' → B' (signed)]
+    ScriptPubKey (locking / challenge):
+      type : scripthash
+      asm  : OP_HASH160 def903f5e427f7871d613a0f7ef550f1ba2d3f05 OP_EQUAL
+      hex  : a914def903f5e427f7871d613a0f7ef550f1ba2d3f0587
+    ScriptSig (unlocking / response):
+      asm  : 001424615cff9dd87fda709e7db6ac8c5d849e7edf0d
+      hex  : 16001424615cff9dd87fda709e7db6ac8c5d849e7edf0d
+    Witness Stack (2 items):
+      [0]: 304402206d2cadb1d8fa00a5c2e46b943ba6898f707a91511092e495de1991810d69474602204cda84977f318d3996176ee19b5825f11f6704bd9e324541bbbe24d9bcf8435a01
+      [1]: 03d9ad2f6693e58617102c8c7acc452552ab4f42b323428c2152e689c8b4c93ac6
+
+  [B' → C' (signed)]
+    ScriptPubKey (locking / challenge):
+      type : scripthash
+      asm  : OP_HASH160 b0214b9885ea2de444ec18ac008905649a01ae80 OP_EQUAL
+      hex  : a914b0214b9885ea2de444ec18ac008905649a01ae8087
+    ScriptSig (unlocking / response):
+      asm  : 0014e1e3e01caf685afb8cd24009cc0e86c109437f94
+      hex  : 160014e1e3e01caf685afb8cd24009cc0e86c109437f94
+    Witness Stack (2 items):
+      [0]: 304402202f908d0d0c6b687d9e9e035ceb787915d5b9be63db9bf6dff6e571ed5a2c480d02206d434932f2164a3656507dc2b4898c36d387733e05c6620de2c1637f696df2b101
+      [1]: 03e01c4ab1e243ad142626c04afd8fe5e2c143eb17fad871450f619420c17c40bc
+
+======================================================================
+  3.3  Why Are SegWit Transactions Smaller? — Analysis
+======================================================================
+
+  Observed data:
+    Legacy  B→C :  size=191 bytes,  vsize=191 vbytes,  weight=764 WU
+    SegWit  B'→C':  size=215 bytes,  vsize=134 vbytes,  weight=533 WU
+    Virtual size saving: 29.8%
+
+  Key reasons why SegWit (P2SH-P2WPKH) transactions are smaller:
+
+  1. WITNESS DISCOUNT
+     Bitcoin's block weight limit counts witness data at 1/4 of the rate of
+     non-witness data. The formula is:
+       weight = (non-witness bytes × 4) + (witness bytes × 1)
+       vsize  = weight / 4
+     Since signatures (the largest part of a transaction) are moved to the
+     witness, the effective virtual size is significantly reduced.
+
+  2. SEGREGATION OF SIGNATURE DATA
+     In legacy P2PKH, the ScriptSig contains both the full signature (~71 bytes)
+     and the public key (~33 bytes) inline in the transaction body.
+     In P2SH-P2WPKH, the ScriptSig only carries a short redeem script (~23 bytes),
+     while the signature and public key are placed in the separate witness field
+     which benefits from the 75% discount.
+
+  3. SCRIPT STRUCTURE DIFFERENCES
+     • Legacy ScriptPubKey: OP_DUP OP_HASH160 <PubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
+       ScriptSig: <Sig> <PubKey>  —  everything counted at full weight.
+     • SegWit ScriptPubKey: OP_HASH160 <RedeemScriptHash> OP_EQUAL
+       ScriptSig: <RedeemScript>  —  tiny, only the P2SH wrapper.
+       Witness: <Sig> <PubKey>  —  counted at 1/4 weight.
+
+  4. PRACTICAL BENEFITS
+     • Lower fees: Miners charge by vsize, so the witness discount directly
+       reduces the fee required for confirmation.
+     • More transactions per block: The 4 MW block weight limit can fit more
+       SegWit transactions than legacy ones.
+     • Transaction malleability fix: Signatures in the witness cannot be
+       altered by intermediaries, enabling second-layer protocols like
+       the Lightning Network.
+

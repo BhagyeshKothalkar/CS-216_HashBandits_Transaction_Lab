@@ -1,0 +1,200 @@
+Choose Transaction Mode:
+Press 1 for Legacy
+Press 2 for Segwit
+Press 3 for Comparative Analysis
+Press 4 to Exit
+Mode: Executing Legacy Transaction
+Funding wallet balance: 909.99983600 BTC
+
+======================================================================
+1. Program Setup: Connect RPC, Wallets, Legacy Addresses & Funding
+======================================================================
+• Connected to bitcoind using RPC and loaded/created wallet.
+• Generated legacy address A: n4Crg69BE5o8tu7ZzvSP8ugCC4jQ6XUujy
+• Generated legacy address B: mrxsNyDsu85dYqxmNiKsURzdiDdsr6U3gf
+• Generated legacy address C: mtZnkMbS7okoYy1fVxwZDaYzSahVB6ubVq
+• Funded address A (TXID: a79ad17d8cb47759360db4b335123f8a89ca0588be74861cf69854ddfb648331)
+
+======================================================================
+2. Create a Transaction from Address A to Address B
+======================================================================
+• Created raw transaction A -> B
+• Extracted ScriptPubKey (Locking Script) for B:
+  ASM: OP_DUP OP_HASH160 7d901878cc38017c614723b603d5d9601417b228 OP_EQUALVERIFY OP_CHECKSIG
+  HEX: 76a9147d901878cc38017c614723b603d5d9601417b22888ac
+• Signed and Broadcasted Transaction A -> B (TXID: f1bc8b9edda359cbcbf4e84f65648e4d341446c7d68e893e5837f58554e6b22c)
+
+======================================================================
+3. Write another program to send B to C and Validate Scripts
+======================================================================
+• Found listunspent for Address B:
+  -> Selected UTXO from previous TX: f1bc8b9edda359cbcbf4e84f65648e4d341446c7d68e893e5837f58554e6b22c (vout 0)
+• Created raw transaction B -> C
+• Signed and Broadcasted Transaction B -> C (TXID: 58f497b1085821dd539d6fc6fb28b8219102a9e7b7c01f024906340d90227b1a)
+
+--- Script Analysis ---
+• Unlocking Script (ScriptSig) provided by B to spend A's output:
+  ASM: 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d922c9fa81e02203b107a58fb8d2185459006411b0b31951de1d6e0db46b6549baffa97b0097cc6[ALL] 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+  HEX: 47304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d922c9fa81e02203b107a58fb8d2185459006411b0b31951de1d6e0db46b6549baffa97b0097cc6012103c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+• Challenge Script (ScriptPubKey) locked by A:
+  HEX: 76a9147d901878cc38017c614723b603d5d9601417b22888ac
+• Check: Does the ScriptSig successfully unlock the ScriptPubKey? Yes, because bitcoind accepted and broadcasted it.
+
+--- Validating using Bitcoin Debugger (btcdeb) ---
+Launching btcdeb interactive debugger to evaluate ScriptSig + ScriptPubKey...
+Spawning process: btcdeb -v --tx=02000000012cb2e65485f537583e898ed6c74614344d8e64654fe8f4cbcb59a3dd9e8bbcf1000000006a47304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d922c9fa81e02203b107a58fb8d2185459006411b0b31951de1d6e0db46b6549baffa97b0097cc6012103c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32fdffffff01c057ca1d000000001976a9148f22e9fe9a2af16978390d6c2addab642e00b79888ac00000000 --txin=0200000001318364fbdd5498f61c8674be8805ca898a3f1235b3b40d365977b48c7dd19aa7000000006a47304402202829ab0c063c5bae9473e331122820b9f277e44974bc9b1012ed36856efa0df10220721cfc084e5027aa515b372f11fa6bd575bba7cad4817482ef741e2a68f7ade401210274e9a5c8e2a2418fe23bc076bee4357e8e7f8aec3a239d2b3159134311d10965fdffffff01f03dcd1d000000001976a9147d901878cc38017c614723b603d5d9601417b22888ac00000000
+
+btcdeb 5.0.24 -- type `/usr/local/bin/btcdeb -h` for start up options
+LOG: signing segwit taproot
+notice: btcdeb has gotten quieter; use --verbose if necessary (this message is temporary)
+got transaction 58f497b1085821dd539d6fc6fb28b8219102a9e7b7c01f024906340d90227b1a:
+CTransaction(hash=58f497b108, ver=2, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(f1bc8b9edd, 0), scriptSig=47304402204b20f5a8b32a93, nSequence=4294967293)
+    CScriptWitness()
+    CTxOut(nValue=4.99800000, scriptPubKey=76a9148f22e9fe9a2af16978390d6c)
+
+got input tx #0 f1bc8b9edda359cbcbf4e84f65648e4d341446c7d68e893e5837f58554e6b22c:
+CTransaction(hash=f1bc8b9edd, ver=2, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(a79ad17d8c, 0), scriptSig=47304402202829ab0c063c5b, nSequence=4294967293)
+    CScriptWitness()
+    CTxOut(nValue=4.99990000, scriptPubKey=76a9147d901878cc38017c614723b6)
+
+input tx index = 0; tx input vout = 0; value = 499990000
+got witness stack of size 0
+8 op script loaded. type `help` for usage information
+script                                                             |  stack 
+-------------------------------------------------------------------+--------
+304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9... | 
+03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32 | 
+<<< scriptPubKey >>>                                               | 
+OP_DUP                                                             | 
+OP_HASH160                                                         | 
+7d901878cc38017c614723b603d5d9601417b228                           | 
+OP_EQUALVERIFY                                                     | 
+OP_CHECKSIG                                                        | 
+#0000 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d922c9fa81e02203b107a58fb8d2185459006411b0b31951de1d6e0db46b6549baffa97b0097cc601
+
+--- Initial btcdeb State loaded successfully ---
+
+--- Executing Step 1 ---
+step
+		<> PUSH stack 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d922c9fa81e02203b107a58fb8d2185459006411b0b31951de1d6e0db46b6549baffa97b0097cc601
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32 | 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9...
+<<< scriptPubKey >>>                                               | 
+OP_DUP                                                             | 
+OP_HASH160                                                         | 
+7d901878cc38017c614723b603d5d9601417b228                           | 
+OP_EQUALVERIFY                                                     | 
+OP_CHECKSIG                                                        | 
+#0001 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+
+--- Executing Step 2 ---
+step
+		<> PUSH stack 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+<<< scriptPubKey >>>                                               | 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+OP_DUP                                                             | 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9...
+OP_HASH160                                                         | 
+7d901878cc38017c614723b603d5d9601417b228                           | 
+OP_EQUALVERIFY                                                     | 
+OP_CHECKSIG                                                        | 
+<<< scriptPubKey >>>
+
+--- Executing Step 3 ---
+step
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+OP_DUP                                                             | 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+OP_HASH160                                                         | 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9...
+7d901878cc38017c614723b603d5d9601417b228                           | 
+OP_EQUALVERIFY                                                     | 
+OP_CHECKSIG                                                        | 
+#0003 OP_DUP
+
+--- Executing Step 4 ---
+step
+		<> PUSH stack 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+OP_HASH160                                                         | 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+7d901878cc38017c614723b603d5d9601417b228                           | 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+OP_EQUALVERIFY                                                     | 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9...
+OP_CHECKSIG                                                        | 
+#0004 OP_HASH160
+
+--- Executing Step 5 ---
+step
+		<> POP  stack
+		<> PUSH stack 7d901878cc38017c614723b603d5d9601417b228
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+7d901878cc38017c614723b603d5d9601417b228                           |                           7d901878cc38017c614723b603d5d9601417b228
+OP_EQUALVERIFY                                                     | 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+OP_CHECKSIG                                                        | 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9...
+#0005 7d901878cc38017c614723b603d5d9601417b228
+
+--- Executing Step 6 ---
+step
+		<> PUSH stack 7d901878cc38017c614723b603d5d9601417b228
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+OP_EQUALVERIFY                                                     |                           7d901878cc38017c614723b603d5d9601417b228
+OP_CHECKSIG                                                        |                           7d901878cc38017c614723b603d5d9601417b228
+                                                                   | 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+                                                                   | 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9...
+#0006 OP_EQUALVERIFY
+
+--- Executing Step 7 ---
+step
+		<> POP  stack
+		<> POP  stack
+		<> PUSH stack 01
+		<> POP  stack
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+OP_CHECKSIG                                                        | 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+                                                                   | 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d9...
+#0007 OP_CHECKSIG
+
+--- Executing Step 8 ---
+step
+EvalChecksig() sigversion=0
+Eval Checksig Pre-Tapscript
+GenericTransactionSignatureChecker::CheckECDSASignature(71 len sig, 33 len pubkey, sigversion=0)
+  sig         = 304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d922c9fa81e02203b107a58fb8d2185459006411b0b31951de1d6e0db46b6549baffa97b0097cc601
+  pub key     = 03c6ec286668f0cc282f6253672e71c03388e22543c2203ea10bb75d2570404e32
+  script code = 76a9147d901878cc38017c614723b603d5d9601417b22888ac
+  hash type   = 01 (SIGHASH_ALL)
+SignatureHash(nIn=0, nHashType=01, amount=499990000)
+- sigversion = SIGVERSION_BASE (non-segwit style)
+ << txTo.vin[nInput=0].prevout = COutPoint(f1bc8b9edd, 0)
+(SerializeScriptCode)
+ << scriptCode.size()=25 - nCodeSeparators=0
+ << script:76a9147d901878cc38017c614723b603d5d9601417b22888ac
+ << txTo.vin[nInput].nSequence = 4294967293 [0xfffffffd]
+  sighash     = d9ac92ceecf1cfbd79a9bb46e95027942d742de54e4db444b3914ab01adf022e
+  pubkey.VerifyECDSASignature(sig=304402204b20f5a8b32a93502159b4a8ff8d93960e54971c3b84552c3d438d922c9fa81e02203b107a58fb8d2185459006411b0b31951de1d6e0db46b6549baffa97b0097cc6, sighash=d9ac92ceecf1cfbd79a9bb46e95027942d742de54e4db444b3914ab01adf022e):
+  result: success
+		<> POP  stack
+		<> POP  stack
+		<> PUSH stack 01
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+                                                                   |                                                                 01
+
+--- Executing Step 9 ---
+step
+btcdeb> script                                                             |                                                             stack 
+-------------------------------------------------------------------+-------------------------------------------------------------------
+                                                                   |                                                                 01
+
+--- Executing Step 10 ---
+step
+at end of script
+
+
+[✓] Script execution finished successfully (Reached end of script).
+btcdeb process closed.

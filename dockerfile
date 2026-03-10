@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# build image
 FROM alpine:3.23 AS build
 WORKDIR /temp
 RUN apk add --no-cache \
@@ -27,7 +27,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install python-bitcoinlib pexpect
 
 
-
+# runtime image
 FROM alpine:3.23
 WORKDIR /app
 RUN apk add --no-cache \

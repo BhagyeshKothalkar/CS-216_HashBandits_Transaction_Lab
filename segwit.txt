@@ -1,0 +1,167 @@
+Choose Transaction Mode:
+Press 1 for Legacy
+Press 2 for Segwit
+Press 3 for Comparative Analysis
+Press 4 to Exit
+Mode: Executing SegWit Transaction
+
+======================================================================
+1. Program Setup: Connect RPC, Wallets, P2SH-SegWit Addresses & Funding
+======================================================================
+Funding wallet (default) balance: 1004.99981350 BTC
+• Connected to bitcoind using RPC and loaded/created segwit_wallet.
+• Generated P2SH-Segwit address A: 2Mvinb67xCDm76nKL8iZKHo2ZWpPG9KYktG
+• Generated P2SH-Segwit address B: 2MxrcUHerDqxHNL5b5iY7vUuXxM85Y9CGbf
+• Generated P2SH-Segwit address C: 2N6qv9iXjJEC2qkt8E2JzWC7HEjQQqTtWCG
+• Funded address A (TXID: 12204119bb8785f4826a5dcf13de079e6cbea35f9b97071ee224b1b068a1fd1c)
+
+======================================================================
+2. Create a Transaction from Address A to Address B
+======================================================================
+• Created raw transaction A -> B
+• Extracted ScriptPubKey (Locking Script) for B:
+  ASM: OP_HASH160 3d89f48e9334424d502932876e85377ab6b76548 OP_EQUAL
+  HEX: a9143d89f48e9334424d502932876e85377ab6b7654887
+• Signed and Broadcasted Transaction A -> B (TXID: 3ec249f6b0be91916e534d742f9ae251ee7721e547276b0b8934aefb9b84b236)
+
+======================================================================
+3. Write another program to send B to C and Validate Scripts
+======================================================================
+• Found listunspent for Address B:
+  -> Selected UTXO from previous TX: 3ec249f6b0be91916e534d742f9ae251ee7721e547276b0b8934aefb9b84b236 (vout 0)
+• Created raw transaction B -> C
+• Signed and Broadcasted Transaction B -> C (TXID: 5860acbefb867ed29a0066e66099deebe8e735e1e6a30d14f6359f033af3edc7)
+
+--- Script Analysis (Notice the differences from Legacy!) ---
+• Challenge Script (ScriptPubKey) locked by A:
+  HEX: a9143d89f48e9334424d502932876e85377ab6b7654887
+• Unlocking Script (ScriptSig) provided by B:
+  ASM: 001401a62afc59e7ed126b891ce9d44103d2df2262fe
+  HEX: 16001401a62afc59e7ed126b891ce9d44103d2df2262fe
+  -> Notice how short this is! It ONLY contains the Redeem Script now.
+• Witness Stack provided by B (The actual Signatures):
+  Witness[0]: 304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a111fe5c9af502205af06bfbda5b6988c7f195d1a93213c243a592ef888e36dad048a1e2a5592ae401
+  Witness[1]: 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+• Check: Does it unlock successfully? Yes, bitcoind accepted and broadcasted it.
+
+--- Validating using Bitcoin Debugger (btcdeb) ---
+Launching btcdeb interactive debugger to evaluate P2SH-SegWit...
+Spawning process: btcdeb -v --tx=0200000000010136b2849bfbae34890b6b2747e52177ee51e29a2f744d536e9191beb0f649c23e000000001716001401a62afc59e7ed126b891ce9d44103d2df2262fefdffffff01e016cd1d0000000017a91495294dd0fe21926c6634583ddb303b23f1e19fe3870247304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a111fe5c9af502205af06bfbda5b6988c7f195d1a93213c243a592ef888e36dad048a1e2a5592ae4012102273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d800000000 --txin=020000000001011cfda168b0b124e21e07979b5fa3be6c9e07de13cf5d6a82f48587bb19412012000000001716001432873321b848e1feaa54f8b68272de99f5980537fdffffff01f03dcd1d0000000017a9143d89f48e9334424d502932876e85377ab6b76548870247304402201b4d9addd61d6f2bbe99c89604a456477c462cc2fe3a5540bbbd2c299fc023e1022016a2736ef17dffe71d60ed683a48aaa907ede37dabf845c129799849d667f406012103951db8e29521816cfe6e8af718beed12610e8189a3ef8afe47fc06116d98ffef00000000
+
+btcdeb 5.0.24 -- type `/usr/local/bin/btcdeb -h` for start up options
+LOG: signing segwit taproot
+notice: btcdeb has gotten quieter; use --verbose if necessary (this message is temporary)
+got segwit transaction 5860acbefb867ed29a0066e66099deebe8e735e1e6a30d14f6359f033af3edc7:
+CTransaction(hash=5860acbefb, ver=2, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(3ec249f6b0, 0), scriptSig=16001401a62afc59e7ed126b, nSequence=4294967293)
+    CScriptWitness(304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a111fe5c9af502205af06bfbda5b6988c7f195d1a93213c243a592ef888e36dad048a1e2a5592ae401, 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8)
+    CTxOut(nValue=4.99980000, scriptPubKey=a91495294dd0fe21926c6634583ddb)
+
+got input tx #0 3ec249f6b0be91916e534d742f9ae251ee7721e547276b0b8934aefb9b84b236:
+CTransaction(hash=3ec249f6b0, ver=2, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(12204119bb, 0), scriptSig=16001432873321b848e1feaa, nSequence=4294967293)
+    CScriptWitness(304402201b4d9addd61d6f2bbe99c89604a456477c462cc2fe3a5540bbbd2c299fc023e1022016a2736ef17dffe71d60ed683a48aaa907ede37dabf845c129799849d667f40601, 03951db8e29521816cfe6e8af718beed12610e8189a3ef8afe47fc06116d98ffef)
+    CTxOut(nValue=4.99990000, scriptPubKey=a9143d89f48e9334424d502932876e)
+
+input tx index = 0; tx input vout = 0; value = 499990000
+got witness stack of size 2
+script sig non-empty; embedded P2SH (extracting payload)
+hash source = 001401a62afc59e7ed126b891ce9d44103d2df2262fe
+22 bytes (P2WPKH)
+valid script
+- generating prevout hash from 1 ins
+[+] COutPoint(3ec249f6b0, 0)
+*** note: there is a for-clarity preamble
+
+This is a virtual script that btcdeb generates and presents to you so you can step through the validation process one step at a time. The input is simply the redeem script hash, whereas btcdeb presents it as a OP_DUP, OP_HASH160, <that hash>, OP_EQUALVERIFY script.
+5 op script loaded. type `help` for usage information
+script                                   |                                                             stack 
+-----------------------------------------+---------------------------------------
+--- Initial btcdeb State loaded successfully ---
+
+--- Executing Step 1 ---
+----------------------------
+OP_DUP                                   | 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+OP_HASH160                               | 304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a11...
+01a62afc59e7ed126b891ce9d44103d2df2262fe | 
+OP_EQUALVERIFY                           | 
+OP_CHECKSIG                              | 
+#0000 OP_DUP
+step
+		<> PUSH stack 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+btcdeb> script                                   |                                                             stack 
+-----------------------------------------+-------------------------------------------------------------------
+OP_HASH160                               | 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+01a62afc59e7ed126b891ce9d44103d2df2262fe | 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+OP_EQUALVERIFY                           | 304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a11...
+OP_CHECKSIG                              | 
+#0001 OP_HASH160
+
+--- Executing Step 2 ---
+step
+		<> POP  stack
+		<> PUSH stack 01a62afc59e7ed126b891ce9d44103d2df2262fe
+btcdeb> script                                   |                                                             stack 
+-----------------------------------------+-------------------------------------------------------------------
+01a62afc59e7ed126b891ce9d44103d2df2262fe |                           01a62afc59e7ed126b891ce9d44103d2df2262fe
+OP_EQUALVERIFY                           | 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+OP_CHECKSIG                              | 304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a11...
+#0002 01a62afc59e7ed126b891ce9d44103d2df2262fe
+
+--- Executing Step 3 ---
+step
+		<> PUSH stack 01a62afc59e7ed126b891ce9d44103d2df2262fe
+btcdeb> script                                   |                                                             stack 
+-----------------------------------------+-------------------------------------------------------------------
+OP_EQUALVERIFY                           |                           01a62afc59e7ed126b891ce9d44103d2df2262fe
+OP_CHECKSIG                              |                           01a62afc59e7ed126b891ce9d44103d2df2262fe
+                                         | 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+
+--- Executing Step 4 ---
+                                         | 304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a11...
+#0003 OP_EQUALVERIFY
+step
+		<> POP  stack
+		<> POP  stack
+		<> PUSH stack 01
+		<> POP  stack
+btcdeb> script                                   |                                                             stack 
+-----------------------------------------+-------------------------------------------------------------------
+OP_CHECKSIG                              | 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+                                         | 304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a11...
+#0004 OP_CHECKSIG
+
+--- Executing Step 5 ---
+step
+EvalChecksig() sigversion=1
+Eval Checksig Pre-Tapscript
+GenericTransactionSignatureChecker::CheckECDSASignature(71 len sig, 33 len pubkey, sigversion=1)
+  sig         = 304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a111fe5c9af502205af06bfbda5b6988c7f195d1a93213c243a592ef888e36dad048a1e2a5592ae401
+  pub key     = 02273959e57772b1554f5f99421d117b8ecb4005b0b385432ee898e854192f83d8
+  script code = 76a91401a62afc59e7ed126b891ce9d44103d2df2262fe88ac
+  hash type   = 01 (SIGHASH_ALL)
+SignatureHash(nIn=0, nHashType=01, amount=499990000)
+- sigversion == SIGVERSION_WITNESS_V0
+  sighash     = 87abc7a51519c31218ca330d49a786a1e9d4c44bb57db46b57988756805a66b7
+  pubkey.VerifyECDSASignature(sig=304402202a7be8cfa90b083ded42e344f1f8dd628409c905e996b2e6a0a0a111fe5c9af502205af06bfbda5b6988c7f195d1a93213c243a592ef888e36dad048a1e2a5592ae4, sighash=87abc7a51519c31218ca330d49a786a1e9d4c44bb57db46b57988756805a66b7):
+  result: success
+		<> POP  stack
+		<> POP  stack
+		<> PUSH stack 01
+btcdeb> script                                   |                                                             stack 
+-----------------------------------------+-------------------------------------------------------------------
+                                         |                                                                 01
+
+--- Executing Step 6 ---
+step
+btcdeb> script                                   |                                                             stack 
+-----------------------------------------+-------------------------------------------------------------------
+                                         |                                                                 01
+
+--- Executing Step 7 ---
+step
+at end of script
+
+
+[✓] Script execution finished successfully (Reached end of script).
+btcdeb process closed.
