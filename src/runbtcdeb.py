@@ -12,11 +12,11 @@ def run_btcdeb_steps(raw_tx_hex, prev_tx_hex):
     try:
         custom_env = os.environ.copy()
         custom_env["TERM"] = "dumb"
-        # Force strict terminal boundaries so btcdeb's UI renderer doesn't segfault
+        
         custom_env["COLUMNS"] = "100"
         custom_env["LINES"] = "40"
 
-        # Explicitly allocate the PTY dimensions in pexpect
+        
         child = pexpect.spawn(
             command, encoding="utf-8", timeout=5, env=custom_env, dimensions=(40, 100)
         )
