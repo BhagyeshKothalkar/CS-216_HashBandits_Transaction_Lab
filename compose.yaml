@@ -11,7 +11,7 @@ services:
     
 
   client:
-    image: testbtc:latest
+    image: yashbhamare123/testbtc:latest
     build:
       context: .
     stdin_open: true

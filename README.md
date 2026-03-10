@@ -2,6 +2,17 @@
 
 A Bitcoin transaction lab that demonstrates **Legacy (P2PKH)** and **P2SH-SegWit (P2SH-P2WPKH)** transaction workflows on a regtest network, including script analysis with `btcdeb` and a comparative analysis of both transaction types.
 
+## Team Information
+
+**Team Name:** HashBandits
+
+| # | Name | Roll Number |
+|---|---|---|
+| 1 | Kothalkar Bhagyesh Ritesh | 240041024 |
+| 2 | Khush Kumar Singh | 240041023 |
+| 3 | Yash Bhamare | 240041040 |
+| 4 | KVL Sarath Chandra | 240001039 |
+
 ## Project Structure
 
 ```
