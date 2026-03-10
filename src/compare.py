@@ -23,7 +23,7 @@ INITIAL_FUNDING = 5.0  # BTC per address
 TRANSACTION_FEE = 0.0001  # BTC
 MIN_BLOCK_HEIGHT = 101  # For coinbase maturity
 
-# ── RPC connection setup ─────────────────────────────────────────────────────
+
 user = os.getenv("BITCOIN_RPC_USER", "rpcuser").rstrip("/")
 password = os.getenv("BITCOIN_RPC_PASSWORD", "rpcpass").rstrip("/")
 host = os.getenv("BITCOIN_RPC_HOST", "127.0.0.1").rstrip("/")
@@ -156,16 +156,13 @@ def print_script_details(label, decoded, is_segwit=False):
             print(f"      [{i}]: {item}")
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  MAIN
-# ══════════════════════════════════════════════════════════════════════════════
 
 def run_compare():
     print("=" * 70)
     print("  Part 3: Comparative Analysis — P2PKH (Legacy) vs P2SH-P2WPKH (SegWit)")
     print("=" * 70)
 
-    # ── Setup ─────────────────────────────────────────────────────────────
+    
     default_conn = setup_wallet("default")
     mining_addr = default_conn._call("getnewaddress")
     ensure_funds(default_conn, mining_addr)
@@ -173,14 +170,14 @@ def run_compare():
     legacy_wallet = setup_wallet("compare_legacy")
     segwit_wallet = setup_wallet("compare_segwit")
 
-    # ── Run both chains ───────────────────────────────────────────────────
+    
     print("\n• Running Legacy (P2PKH) transaction chain A → B → C ...")
     legacy = run_chain(legacy_wallet, default_conn, mining_addr, "legacy", "Legacy")
 
     print("• Running SegWit (P2SH-P2WPKH) transaction chain A' → B' → C' ...")
     segwit = run_chain(segwit_wallet, default_conn, mining_addr, "p2sh-segwit", "SegWit")
 
-    # ══════════════════════════════════════════════════════════════════════
+   
     print("\n" + "=" * 70)
     print("  3.1  Transaction Size Comparison (bytes, vbytes, weight)")
     print("=" * 70)
@@ -197,7 +194,7 @@ def run_compare():
 
     print(f"\n  Δ B→C:  size={l_bc_size - s_bc_size:+d}   vsize={l_bc_vsize - s_bc_vsize:+d}   weight={l_bc_weight - s_bc_weight:+d}  (Legacy − SegWit)")
 
-    # ══════════════════════════════════════════════════════════════════════
+    
     print("\n" + "=" * 70)
     print("  3.2  Script Structure Comparison")
     print("=" * 70)
@@ -210,7 +207,7 @@ def run_compare():
     print_script_details("A' → B' (signed)", segwit["ab"], is_segwit=True)
     print_script_details("B' → C' (signed)", segwit["bc"], is_segwit=True)
 
-    # ══════════════════════════════════════════════════════════════════════
+   
     print("\n" + "=" * 70)
     print("  3.3  Why Are SegWit Transactions Smaller? — Analysis")
     print("=" * 70)
