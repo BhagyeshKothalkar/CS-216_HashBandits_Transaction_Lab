@@ -9,8 +9,8 @@ A Bitcoin transaction lab that demonstrates **Legacy (P2PKH)** and **P2SH-SegWit
 | # | Name | Roll Number |
 |---|---|---|
 | 1 | Kothalkar Bhagyesh Ritesh | 240041024 |
-| 2 | Khush Kumar Singh | 240041023 |
-| 3 | Yash Bhamare | 240041040 |
+| 2 | Yash Bhamare | 240041040 |
+| 3 | Khush Kumar Singh | 240041023 |
 | 4 | KVL Sarath Chandra | 240001039 |
 
 ## Project Structure
@@ -38,21 +38,15 @@ A Bitcoin transaction lab that demonstrates **Legacy (P2PKH)** and **P2SH-SegWit
 
 ## Setup & Run
 
-**1. Build the Docker images:**
-
-```bash
-docker compose build
-```
-
-**2. Run the client interactively:**
+**1. Run the client interactively:**
 
 ```bash
 docker compose run client
 ```
 
-This automatically starts the `bitcoin_server` (Bitcoin Core in regtest mode) and then launches the interactive client.
+This automatically starts the `bitcoin_server` (Bitcoin Core in regtest mode) and then launches the interactive client by pulling the `testbtc` image from our docker repository.
 
-**3. Choose a mode:**
+**2. Choose a mode:**
 
 ```
 Choose Transaction Mode:
