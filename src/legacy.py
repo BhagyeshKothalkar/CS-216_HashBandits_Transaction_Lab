@@ -10,7 +10,7 @@ from runbtcdeb import run_btcdeb_steps
 
 SelectParams("regtest")
 
-# Configuration constants
+# Configuration constant
 RPC_PORT = 18443
 INITIAL_FUNDING = 5.0  # BTC
 TRANSACTION_FEE = 0.0001  # BTC
