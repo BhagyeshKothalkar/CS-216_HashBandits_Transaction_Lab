@@ -6,7 +6,7 @@ import pexpect
 
 def run_btcdeb_steps(raw_tx_hex, prev_tx_hex):
 
-    command = f"btcdeb --tx={raw_tx_hex} --txin={prev_tx_hex}"
+    command = f"btcdeb -v --tx={raw_tx_hex} --txin={prev_tx_hex}"
     print(f"Spawning process: {command}\n")
 
     try:
@@ -21,8 +21,7 @@ def run_btcdeb_steps(raw_tx_hex, prev_tx_hex):
             command, encoding="utf-8", timeout=5, env=custom_env, dimensions=(40, 100)
         )
 
-        child.logfile = sys.stdout
-
+        child.logfile_read = sys.stdout
         prompt = r"btcdeb>"
 
         child.expect([prompt, r">", pexpect.TIMEOUT], timeout=2)
